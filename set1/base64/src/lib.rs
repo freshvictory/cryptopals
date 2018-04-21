@@ -1,5 +1,5 @@
 pub mod base64 {
-    pub fn from_hex(hex: &String) -> String {
+    pub fn hex_to_base64(hex: &String) -> String {
         const CHAR_SIZE: usize = 4;
 
         let bit_vector = hex_to_bin(&hex, &CHAR_SIZE);
@@ -7,7 +7,7 @@ pub mod base64 {
         bits_to_base64(bit_vector, hex.chars().count(), &CHAR_SIZE)
     }
 
-    pub fn from_ascii(ascii: &String) -> String {
+    pub fn ascii_to_base64(ascii: &String) -> String {
         const CHAR_SIZE: usize = 8;
         
         let bit_vector = ascii_to_bin(&ascii, &CHAR_SIZE);
@@ -131,15 +131,18 @@ mod tests {
 
     #[test]
     fn test_ascii() {
-        assert_eq!("TWFu", from_ascii(&String::from("Man")));
-        assert_eq!("TWE=", from_ascii(&String::from("Ma")));
-        assert_eq!("TQ==", from_ascii(&String::from("M")));
+        assert_eq!("TWFu", ascii_to_base64(&String::from("Man")));
+        assert_eq!("TWE=", ascii_to_base64(&String::from("Ma")));
+        assert_eq!("TQ==", ascii_to_base64(&String::from("M")));
     }
 
     #[test]
     fn test_hex() {
-        assert_eq!("TWFu", from_hex(&String::from("4d616e")));
-        assert_eq!("TWE=", from_hex(&String::from("4d61")));
-        assert_eq!("TQ==", from_hex(&String::from("4d")));
+        assert_eq!("TWFu", hex_to_base64(&String::from("4d616e")));
+        assert_eq!("TWE=", hex_to_base64(&String::from("4d61")));
+        assert_eq!("TQ==", hex_to_base64(&String::from("4d")));
+        assert_eq!(
+            "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t",
+            hex_to_base64(&String::from("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")));
     }
 }
